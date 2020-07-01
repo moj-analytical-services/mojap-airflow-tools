@@ -1,7 +1,10 @@
+import re
+
 from airflow import DAG
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 
 from mojap_airflow_tools.constants import ecr_base_path
+
 
 def basic_kubernetes_pod_operator(
     task_id: str,
@@ -65,6 +68,12 @@ def basic_kubernetes_pod_operator(
     """
 
     # Check inputs
+    allowed_chars = "[a-z0-9.-]"
+    if not bool(re.search(f"^{allowed_chars}*$", task_id)):
+        raise ValueError(
+            f"Input task_id ({task_id}) only allows these characters: {allowed_chars}"
+        )
+
     nullr = repo_name is None
     nulli = release is None
     nullfin = full_image_name is None
@@ -80,8 +89,10 @@ def basic_kubernetes_pod_operator(
             "Please provide a (repo_name and release) or full_image_name only."
         )
         raise ValueError(msg)
-    repo_name = repo_name.replace("_", "-")
-    image = f"{ecr_base_path}{repo_name}:{release}"
+
+    if nullfin:
+        repo_name = repo_name.replace("_", "-")
+        full_image_name = f"{ecr_base_path}{repo_name}:{release}"
 
     if "_" in task_id or " " in task_id:
         raise ValueError(
@@ -108,7 +119,7 @@ def basic_kubernetes_pod_operator(
     kube_op = KubernetesPodOperator(
         dag=dag,
         namespace=namespace,
-        image=image,
+        image=full_image_name,
         env_vars=env_vars,
         labels={"app": dag.dag_id},
         name=task_id,

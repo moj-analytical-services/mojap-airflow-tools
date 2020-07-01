@@ -6,6 +6,7 @@ authors = ["mojap-data-engineers"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
+poetry_version = ">=0.1.5"
 apache-airflow = {extras = ["kubernetes"], version = "^1.10.10"}
 
 [tool.poetry.extras]

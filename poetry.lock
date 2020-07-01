@@ -192,7 +192,7 @@ version = ">=0.23,<2"
 test = ["coverage", "flake8", "pexpect", "wheel"]
 
 [[package]]
-category = "main"
+category = "dev"
 description = "Atomic file writes."
 marker = "sys_platform == \"win32\""
 name = "atomicwrites"
@@ -832,7 +832,7 @@ lint = ["flake8 (3.8.2)", "flake8-bugbear (20.1.4)", "pre-commit (>=2.0,<3.0)"]
 tests = ["pytest", "pytest-lazy-fixture"]
 
 [[package]]
-category = "main"
+category = "dev"
 description = "More routines for operating on iterables, beyond itertools"
 name = "more-itertools"
 optional = false
@@ -873,7 +873,7 @@ signals = ["blinker"]
 signedtoken = ["cryptography", "pyjwt (>=1.0.0)"]
 
 [[package]]
-category = "main"
+category = "dev"
 description = "Core utilities for Python packages"
 name = "packaging"
 optional = false
@@ -914,7 +914,7 @@ pytzdata = ">=2018.3.0.0"
 tzlocal = ">=1.5.0.0,<2.0.0.0"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "plugin and hook calling mechanisms for python"
 name = "pluggy"
 optional = false
@@ -928,6 +928,17 @@ version = ">=0.12"
 
 [package.extras]
 dev = ["pre-commit", "tox"]
+
+[[package]]
+category = "main"
+description = "Python library for extracting version from poetry pyproject.toml file"
+name = "poetry-version"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+version = "0.1.5"
+
+[package.dependencies]
+tomlkit = ">=0.4.6,<0.6.0"
 
 [[package]]
 category = "main"
@@ -956,7 +967,7 @@ version = "5.7.0"
 enum = ["enum34"]
 
 [[package]]
-category = "main"
+category = "dev"
 description = "library with cross-python path, ini-parsing, io, code, log facilities"
 name = "py"
 optional = false
@@ -1013,7 +1024,7 @@ flake8 = ["flake8", "flake8-import-order", "pep8-naming"]
 test = ["pytest (>=4.0.1,<5.0.0)", "pytest-cov (>=2.6.0,<3.0.0)", "pytest-runner (>=4.2,<5.0.0)"]
 
 [[package]]
-category = "main"
+category = "dev"
 description = "Python parsing module"
 name = "pyparsing"
 optional = false
@@ -1032,7 +1043,7 @@ version = "0.16.0"
 six = "*"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "pytest: simple powerful testing with Python"
 name = "pytest"
 optional = false
@@ -1299,6 +1310,14 @@ twisted = ["twisted"]
 
 [[package]]
 category = "main"
+description = "Style preserving TOML library"
+name = "tomlkit"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+version = "0.5.11"
+
+[[package]]
+category = "main"
 description = "Backported and Experimental Type Hints for Python 3.5+"
 marker = "python_version < \"3.8\""
 name = "typing-extensions"
@@ -1339,7 +1358,7 @@ secure = ["certifi", "cryptography (>=1.3.4)", "idna (>=2.0.0)", "pyOpenSSL (>=0
 socks = ["PySocks (>=1.5.6,<1.5.7 || >1.5.7,<2.0)"]
 
 [[package]]
-category = "main"
+category = "dev"
 description = "Measures the displayed width of unicode strings in a terminal"
 name = "wcwidth"
 optional = false
@@ -1418,7 +1437,7 @@ test = ["zope.testrunner"]
 airflow = ["apache-airflow"]
 
 [metadata]
-content-hash = "1b2417e479e65a524476d4239bc1729de78d579761625e5b196ad6827fa54578"
+content-hash = "07f8b3ace4d06023500d6ea6251a439f0dd8197352dd61d5d6c64ea4239b8718"
 python-versions = "^3.7"
 
 [metadata.files]
@@ -1804,6 +1823,10 @@ pluggy = [
     {file = "pluggy-0.13.1-py2.py3-none-any.whl", hash = "sha256:966c145cd83c96502c3c3868f50408687b38434af77734af1e9ca461a4081d2d"},
     {file = "pluggy-0.13.1.tar.gz", hash = "sha256:15b2acde666561e1298d71b523007ed7364de07029219b604cf808bfa1c765b0"},
 ]
+poetry-version = [
+    {file = "poetry-version-0.1.5.tar.gz", hash = "sha256:f7d77b5c4f0761c5a5b9031f199c79c7f81d125676248053ea84e69ad79faa89"},
+    {file = "poetry_version-0.1.5-py2.py3-none-any.whl", hash = "sha256:ba259257640cd36c76375563a001b9e85c6f54d764cc56b3eed0f3b5cefb0317"},
+]
 prison = [
     {file = "prison-0.1.3-py2.py3-none-any.whl", hash = "sha256:58e972709e9e2feabc1aa06cb6493f9c43b55a8afd7d653cf0aa82e3923fbd35"},
     {file = "prison-0.1.3.tar.gz", hash = "sha256:a02b55719d033c4e7efc1d1660ed884a73743d89effb48205c5743c3c658b799"},
@@ -1993,6 +2016,10 @@ text-unidecode = [
 ]
 thrift = [
     {file = "thrift-0.13.0.tar.gz", hash = "sha256:9af1c86bf73433afc6010ed376a6c6aca2b54099cc0d61895f640870a9ae7d89"},
+]
+tomlkit = [
+    {file = "tomlkit-0.5.11-py2.py3-none-any.whl", hash = "sha256:4e1bd6c9197d984528f9ff0cc9db667c317d8881288db50db20eeeb0f6b0380b"},
+    {file = "tomlkit-0.5.11.tar.gz", hash = "sha256:f044eda25647882e5ef22b43a1688fb6ab12af2fc50e8456cdfc751c873101cf"},
 ]
 typing-extensions = [
     {file = "typing_extensions-3.7.4.2-py2-none-any.whl", hash = "sha256:f8d2bd89d25bc39dabe7d23df520442fa1d8969b82544370e03d88b5a591c392"},
