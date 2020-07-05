@@ -1233,7 +1233,7 @@ marker = "python_version >= \"3.6\""
 name = "sqlalchemy-utils"
 optional = false
 python-versions = "*"
-version = "0.36.6"
+version = "0.36.7"
 
 [package.dependencies]
 SQLAlchemy = ">=1.0"
@@ -1437,7 +1437,7 @@ test = ["zope.testrunner"]
 airflow = ["apache-airflow"]
 
 [metadata]
-content-hash = "07f8b3ace4d06023500d6ea6251a439f0dd8197352dd61d5d6c64ea4239b8718"
+content-hash = "34e2797a83699d16eca3c6349e6bca7258ba9b732a40d852fd8c3c21d6eaa998"
 python-versions = "^3.7"
 
 [metadata.files]
@@ -1997,7 +1997,7 @@ sqlalchemy-jsonfield = [
     {file = "SQLAlchemy_JSONField-0.9.0-py2.py3-none-any.whl", hash = "sha256:1abf295f7215c8f1c0b0d30d659f4372870fc83755874ef21cad7e2f2d6419ba"},
 ]
 sqlalchemy-utils = [
-    {file = "SQLAlchemy-Utils-0.36.6.tar.gz", hash = "sha256:7a7fab14bed80df065412bbf71a0a9b0bfeb4b7c111c2d9bffe57283082f3a6b"},
+    {file = "SQLAlchemy-Utils-0.36.7.tar.gz", hash = "sha256:be319a16022b6a01e1d6c838340485beb4d34fd9c1c19d2303356804fa0faa09"},
 ]
 tabulate = [
     {file = "tabulate-0.8.7-py3-none-any.whl", hash = "sha256:ac64cb76d53b1231d364babcd72abbb16855adac7de6665122f97b593f1eb2ba"},
