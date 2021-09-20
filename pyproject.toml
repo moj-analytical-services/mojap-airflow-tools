@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "mojap-airflow-tools"
-version = "0.0.1"
+version = "0.0.2"
 description = "A few wrappers and tools to use airflow on AP"
 authors = ["mojap-data-engineers"]
 
