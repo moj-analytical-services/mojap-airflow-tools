@@ -1,7 +1,10 @@
 import re
+from typing import Optional
 
 from airflow import DAG
-from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
+from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import (
+    KubernetesPodOperator,
+)
 
 from mojap_airflow_tools.constants import ecr_base_path
 
@@ -10,11 +13,12 @@ def basic_kubernetes_pod_operator(
     task_id: str,
     dag: DAG,
     role: str,
-    repo_name: str = None,
-    release: str = None,
-    full_image_name: str = None,
-    env_vars: dict = {},
-    sandboxed: bool = False,
+    repo_name: Optional[str] = None,
+    release: Optional[str] = None,
+    full_image_name: Optional[str] = None,
+    env_vars: Optional[dict] = None,
+    sandboxed: Optional[bool] = False,
+    **kwargs,
 ) -> KubernetesPodOperator:
     """
     A simple wrapper function for using the KubernetesPodOperator on the
@@ -100,6 +104,9 @@ def basic_kubernetes_pod_operator(
         )
 
     # Define stand envs to be passed to pod operator
+    if env_vars is None:
+        env_vars = dict()
+
     std_envs = {
         "AWS_METADATA_SERVICE_TIMEOUT": "60",
         "AWS_METADATA_SERVICE_NUM_ATTEMPTS": "5",
@@ -113,20 +120,35 @@ def basic_kubernetes_pod_operator(
         user = role.replace("alpha_user_", "", 1)
         user = user.replace("_", "-")
         namespace = f"user-{user}"
+        kube_op = KubernetesPodOperator(
+            dag=dag,
+            namespace=namespace,
+            image=full_image_name,
+            env_vars=env_vars,
+            labels={"app": dag.dag_id},
+            name=task_id,
+            in_cluster=True,
+            task_id=task_id,
+            get_logs=True,
+            annotations={"iam.amazonaws.com/role": role},
+            **kwargs,
+        )
     else:
-        namespace = "airflow"
-
-    kube_op = KubernetesPodOperator(
-        dag=dag,
-        namespace=namespace,
-        image=full_image_name,
-        env_vars=env_vars,
-        labels={"app": dag.dag_id},
-        name=task_id,
-        in_cluster=True,
-        task_id=task_id,
-        get_logs=True,
-        annotations={"iam.amazonaws.com/role": role},
-    )
+        kube_op = KubernetesPodOperator(
+            dag=dag,
+            namespace="airflow",
+            image=full_image_name,
+            env_vars=env_vars,
+            labels={"app": dag.dag_id},
+            name=task_id,
+            in_cluster=False,
+            is_delete_operator_pod=True,
+            cluster_context="aws",
+            config_file="/usr/local/airflow/dags/.kube/config",
+            task_id=task_id,
+            get_logs=True,
+            annotations={"iam.amazonaws.com/role": role},
+            **kwargs,
+        )
 
     return kube_op

@@ -1,22 +1,20 @@
 [tool.poetry]
 name = "mojap-airflow-tools"
-version = "0.0.2"
-description = "A few wrappers and tools to use airflow on AP"
-authors = ["mojap-data-engineers"]
+version = "2.0.0"
+description = "A few wrappers and tools to use Airflow on the Analytical Platform"
+authors = ["MoJ Data Engineering"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
-poetry_version = ">=0.1.5"
-apache-airflow = {extras = ["kubernetes"], version = "^1.10.10"}
-
-[tool.poetry.extras]
-airflow = ["apache-airflow"]
+apache-airflow = "^2.0.0"
+apache-airflow-providers-cncf-kubernetes = "^2.0.0"
 
 [tool.poetry.dev-dependencies]
-pytest = "^5.4"
+pytest = "^6.2.5"
 flake8 = "^3.9.2"
-black = "^21.6b0"
+black = "^21.9b0"
+toml = ""
 
 [build-system]
-requires = ["poetry>=0.12"]
-build-backend = "poetry.masonry.api"
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
