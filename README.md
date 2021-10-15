@@ -28,3 +28,13 @@ To create a new release:
 6.  Publish the package by running:
 
         poetry publish
+
+## How to update the release used by Airflow
+
+To update the release used by Airflow, update the value of
+`config.data-engineering-airflow.mwaa.requirements` in the `Pulumi.*.yaml` file
+for the relevant environment in
+[data-engineering-airflow](https://github.com/ministryofjustice/data-engineering-airflow).
+
+You should update and test the requirements in the `dev` environment before
+deploying to `prod`.
