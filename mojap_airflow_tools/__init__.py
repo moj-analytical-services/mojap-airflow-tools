@@ -1,3 +1,1 @@
-import poetry_version
-
-__version__ = poetry_version.extract(source_file=__file__)
+__version__ = "2.0.0"
