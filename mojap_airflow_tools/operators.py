@@ -152,3 +152,6 @@ def basic_kubernetes_pod_operator(
         )
 
     return kube_op
+
+
+BasicKubernetesPodOperator = basic_kubernetes_pod_operator
