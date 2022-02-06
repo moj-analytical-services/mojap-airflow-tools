@@ -45,6 +45,12 @@ def test_no_errors(repo, tag, full):
     assert k.cluster_context == "aws"
     assert k.config_file == "/usr/local/airflow/dags/.kube/config"
     assert k.in_cluster is False
+    assert k.get_logs is True
+    assert k.security_context == {
+        "allowPrivilegeEscalation": False,
+        "runAsNonRoot": True,
+        "privileged": False,
+    }
 
     expected_env = [
         V1EnvVar(

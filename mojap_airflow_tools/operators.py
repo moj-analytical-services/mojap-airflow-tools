@@ -148,6 +148,11 @@ def basic_kubernetes_pod_operator(
             task_id=task_id,
             get_logs=True,
             annotations={"iam.amazonaws.com/role": role},
+            security_context={
+                "allowPrivilegeEscalation": False,
+                "runAsNonRoot": True,
+                "privileged": False,
+            },
             **kwargs,
         )
 
