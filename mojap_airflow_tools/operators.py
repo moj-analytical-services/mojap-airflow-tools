@@ -117,8 +117,7 @@ def basic_kubernetes_pod_operator(
             env_vars[k] = v
 
     if sandboxed:
-        user = role.replace("alpha_user_", "", 1)
-        user = user.replace("_", "-")
+        user = role.replace("alpha_user_", "", 1).replace("_", "-").lower()
         namespace = f"user-{user}"
         kube_op = KubernetesPodOperator(
             dag=dag,
@@ -130,7 +129,7 @@ def basic_kubernetes_pod_operator(
             in_cluster=True,
             task_id=task_id,
             get_logs=True,
-            annotations={"iam.amazonaws.com/role": role},
+            service_account_name=f"{user}-jupyter",
             **kwargs,
         )
     else:
