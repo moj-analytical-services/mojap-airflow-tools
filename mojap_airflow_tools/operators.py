@@ -112,6 +112,7 @@ def basic_kubernetes_pod_operator(
         "AWS_METADATA_SERVICE_NUM_ATTEMPTS": "5",
         "AWS_DEFAULT_REGION": "eu-west-1",
     }
+    role_arn = "arn:aws:iam::593291632749:role/"+role
     for k, v in std_envs.items():
         if k not in env_vars:
             env_vars[k] = v
@@ -130,7 +131,7 @@ def basic_kubernetes_pod_operator(
             in_cluster=True,
             task_id=task_id,
             get_logs=True,
-            annotations={"iam.amazonaws.com/role": role},
+            annotations={"eks.amazonaws.com/role-arn": role_arn},
             **kwargs,
         )
     else:
@@ -147,7 +148,7 @@ def basic_kubernetes_pod_operator(
             config_file="/usr/local/airflow/dags/.kube/config",
             task_id=task_id,
             get_logs=True,
-            annotations={"iam.amazonaws.com/role": role},
+            annotations={"eks.amazonaws.com/role-arn": role_arn},
             **kwargs,
         )
 
