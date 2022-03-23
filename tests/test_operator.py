@@ -133,7 +133,7 @@ def test_sandboxed():
         sandboxed=True,
     )
     assert k.image == f"{ecr_base_path}my-repo:v0.0.0"
-    assert k.annotations == {"iam.amazonaws.com/role": "alpha_user_test"}
+    assert k.annotations == {}
     assert k.namespace == "user-test"
     assert k.is_delete_operator_pod is False
     assert k.cluster_context is None
