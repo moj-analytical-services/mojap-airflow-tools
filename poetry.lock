@@ -218,14 +218,14 @@ zendesk = ["apache-airflow-providers-zendesk"]
 
 [[package]]
 name = "apache-airflow-providers-cncf-kubernetes"
-version = "1.2.0"
+version = "2.2.0"
 description = "Provider package apache-airflow-providers-cncf-kubernetes for Apache Airflow"
 category = "main"
 optional = false
 python-versions = "~=3.6"
 
 [package.dependencies]
-apache-airflow = ">=2.0.0"
+apache-airflow = ">=2.1.0"
 cryptography = ">=2.0.0"
 kubernetes = ">=3.0.0,<12.0.0"
 
@@ -1801,7 +1801,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "492aed4e34091be644e30575eb192e4d47419e0b0e63e6379b968195322e5bc6"
+content-hash = "d7bcb478051f72df49caeef151b0347e236f4803b6722c409feda0215a9ccb32"
 
 [metadata.files]
 alembic = [
@@ -1817,8 +1817,8 @@ apache-airflow = [
     {file = "apache_airflow-2.2.4-py3-none-any.whl", hash = "sha256:42bd4765b3134b73c1fe6d7865052dbc30b25bbb32febf6dd758aa1b24ee09ba"},
 ]
 apache-airflow-providers-cncf-kubernetes = [
-    {file = "apache-airflow-providers-cncf-kubernetes-1.2.0.tar.gz", hash = "sha256:3b851db4b11fb59a4d41ee25ee9401fe6b9f5243677740ef8f7641b14102d4df"},
-    {file = "apache_airflow_providers_cncf_kubernetes-1.2.0-py3-none-any.whl", hash = "sha256:17e67bb3649e772b885229d47122e557cec342974094804867ae5acfd9d4efcc"},
+    {file = "apache-airflow-providers-cncf-kubernetes-2.2.0.tar.gz", hash = "sha256:a745af090815ca7d16c3878aacc111e8db6d40fb3ccf7b9037ce1a64acaeab12"},
+    {file = "apache_airflow_providers_cncf_kubernetes-2.2.0-py3-none-any.whl", hash = "sha256:3c6bb60daafcc8fccd507661eca9025bc0679bbf4c590e7fa227f08573101364"},
 ]
 apache-airflow-providers-ftp = [
     {file = "apache-airflow-providers-ftp-2.1.1.tar.gz", hash = "sha256:1810660a16ed84d3fa72671b1764572e95a8f64ded3e115e8856cbd010ed0c5d"},
