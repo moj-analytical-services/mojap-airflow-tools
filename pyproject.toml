@@ -6,8 +6,8 @@ authors = ["MoJ Data Engineering"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
-apache-airflow = "^2.2.2"
-apache-airflow-providers-cncf-kubernetes = "^2.1.0"
+apache-airflow = "2.2.2"
+apache-airflow-providers-cncf-kubernetes = "2.1.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"
