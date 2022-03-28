@@ -5,6 +5,7 @@ from airflow import DAG
 from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import (
     KubernetesPodOperator,
 )
+from random import randint
 
 from mojap_airflow_tools.constants import ecr_base_path
 
@@ -150,6 +151,7 @@ def basic_kubernetes_pod_operator(
             security_context={
                 "allowPrivilegeEscalation": False,
                 "runAsNonRoot": True,
+                "runAsUser": randint(1000, 9999),
                 "privileged": False,
             },
             **kwargs,
