@@ -5,7 +5,6 @@ from airflow import DAG
 from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import (
     KubernetesPodOperator,
 )
-from random import randint
 
 from mojap_airflow_tools.constants import ecr_base_path
 
@@ -17,7 +16,7 @@ def basic_kubernetes_pod_operator(
     repo_name: Optional[str] = None,
     release: Optional[str] = None,
     full_image_name: Optional[str] = None,
-    user_name: Optional[str] = None,
+    run_as_user: Optional[str] = None,
     env_vars: Optional[dict] = None,
     sandboxed: Optional[bool] = False,
     **kwargs,
@@ -54,7 +53,7 @@ def basic_kubernetes_pod_operator(
         of the docker image. This function will throw an error if this and the
         other two parameters are all not None.
 
-    user_name:
+    run_as_user:
         Supplies a username for the 'runAsUser' argument of the security context.
         If left blank, we assume the user is providing a user as part of the image,
         otherwise the image will not run in our containers.
@@ -128,8 +127,8 @@ def basic_kubernetes_pod_operator(
         "runAsNonRoot": True,
         "privileged": False,
     }
-    if user_name is not None:
-        security_context["runAsUser"] = user_name
+    if run_as_user is not None:
+        security_context["runAsUser"] = run_as_user
 
     if sandboxed:
         user = role.replace("alpha_user_", "", 1).replace("_", "-").lower()
