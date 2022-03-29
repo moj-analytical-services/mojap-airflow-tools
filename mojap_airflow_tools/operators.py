@@ -16,6 +16,7 @@ def basic_kubernetes_pod_operator(
     repo_name: Optional[str] = None,
     release: Optional[str] = None,
     full_image_name: Optional[str] = None,
+    run_as_user: Optional[str] = None,
     env_vars: Optional[dict] = None,
     sandboxed: Optional[bool] = False,
     **kwargs,
@@ -51,6 +52,11 @@ def basic_kubernetes_pod_operator(
         and release parameters. Expects the full path and name (including tag)
         of the docker image. This function will throw an error if this and the
         other two parameters are all not None.
+
+    run_as_user:
+        Supplies a username for the 'runAsUser' argument of the security context.
+        If left blank, we assume the user is providing a user as part of the image,
+        otherwise the image will not run in our containers.
 
     env_vars:
         The environment variables you want to pass to your docker image
@@ -116,6 +122,14 @@ def basic_kubernetes_pod_operator(
         if k not in env_vars:
             env_vars[k] = v
 
+    security_context = {
+        "allowPrivilegeEscalation": False,
+        "runAsNonRoot": True,
+        "privileged": False,
+    }
+    if run_as_user is not None:
+        security_context["runAsUser"] = run_as_user
+
     if sandboxed:
         user = role.replace("alpha_user_", "", 1).replace("_", "-").lower()
         namespace = f"user-{user}"
@@ -147,11 +161,7 @@ def basic_kubernetes_pod_operator(
             task_id=task_id,
             get_logs=True,
             annotations={"iam.amazonaws.com/role": role},
-            security_context={
-                "allowPrivilegeEscalation": False,
-                "runAsNonRoot": True,
-                "privileged": False,
-            },
+            security_context=security_context,
             **kwargs,
         )
 
