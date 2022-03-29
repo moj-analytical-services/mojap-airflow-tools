@@ -123,23 +123,13 @@ def basic_kubernetes_pod_operator(
         if k not in env_vars:
             env_vars[k] = v
 
-    if user_name is None:
-        security_context = (
-            {
-                "allowPrivilegeEscalation": False,
-                "runAsNonRoot": True,
-                "privileged": False,
-            },
-        )
-    else:
-        security_context = (
-            {
-                "allowPrivilegeEscalation": False,
-                "runAsNonRoot": True,
-                "runAsUser": user_name,
-                "privileged": False,
-            },
-        )
+    security_context = {
+        "allowPrivilegeEscalation": False,
+        "runAsNonRoot": True,
+        "privileged": False,
+    }
+    if user_name is not None:
+        security_context["runAsUser"] = user_name
 
     if sandboxed:
         user = role.replace("alpha_user_", "", 1).replace("_", "-").lower()
