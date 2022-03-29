@@ -151,7 +151,9 @@ def basic_kubernetes_pod_operator(
             security_context={
                 "allowPrivilegeEscalation": False,
                 "runAsNonRoot": True,
-                "runAsUser": randint(1000, 9999),
+                "runAsUser": randint(100, 9999999999),
+                # assigning pods to the same user could lead
+                # to cross-contamination by an attacker relying on shared user
                 "privileged": False,
             },
             **kwargs,
