@@ -6,7 +6,7 @@ from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import (
     KubernetesPodOperator,
 )
 
-from mojap_airflow_tools.constants import ecr_base_path
+from mojap_airflow_tools.constants import ECR_TEMPLATE, DEFAULT_ACC_NUMBER
 
 
 def basic_kubernetes_pod_operator(
@@ -17,6 +17,7 @@ def basic_kubernetes_pod_operator(
     release: Optional[str] = None,
     full_image_name: Optional[str] = None,
     env_vars: Optional[dict] = None,
+    account_number: Optional[str] = None,
     sandboxed: Optional[bool] = False,
     **kwargs,
 ) -> KubernetesPodOperator:
@@ -50,7 +51,8 @@ def basic_kubernetes_pod_operator(
         built from a guthub repo than use this parameter instead of the repo_name
         and release parameters. Expects the full path and name (including tag)
         of the docker image. This function will throw an error if this and the
-        other two parameters are all not None.
+        other three (repo_name, release, and account number) parameters are all
+        not None.
 
     env_vars:
         The environment variables you want to pass to your docker image
@@ -58,6 +60,10 @@ def basic_kubernetes_pod_operator(
         to your environment 'AWS_DEFAULT_REGION', 'AWS_METADATA_SERVICE_TIMEOUT'
         and 'AWS_METADATA_SERVICE_NUM_ATTEMPTS'. But can be overwritten if
         these keys exist in your env_vars parameter.
+
+    account_number:
+        the account number to pull the ECR image from, if providing one from ECR.
+        This defaults to the data engineering account if not set.
 
     sandboxed:
         Set to True if running on your airflow sandbox environment and
@@ -80,23 +86,28 @@ def basic_kubernetes_pod_operator(
 
     nullr = repo_name is None
     nulli = release is None
+    nulla - account_number is None
     nullfin = full_image_name is None
     if nullr and nulli:
         if nullfin:
             raise ValueError(
-                "Please provide a (repo_name and release) or full_image_name"
+                "Please provide a (repo_name and release, and optional account_number) "
+                "or full_image_name"
             )
 
     elif (not nullr) and (not nulli) and (not nullfin):
         msg = (
-            "You cannot provide all three parameters. "
-            "Please provide a (repo_name and release) or full_image_name only."
+            "You cannot provide all three parameters. Please provide a (repo_name "
+            "and release, and optional account_number) or full_image_name only."
         )
         raise ValueError(msg)
 
     if nullfin:
         repo_name = repo_name.replace("_", "-")
-        full_image_name = f"{ecr_base_path}{repo_name}:{release}"
+        acc_num = account_number if account_number else DEFAULT_ACC_NUMBER
+        full_image_name = ECR_TEMPLATE.format(
+            account_number=acc_num, repo_name=repo_name, release=release
+        )
 
     if "_" in task_id or " " in task_id:
         raise ValueError(
