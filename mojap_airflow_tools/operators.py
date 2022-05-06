@@ -86,7 +86,6 @@ def basic_kubernetes_pod_operator(
 
     nullr = repo_name is None
     nulli = release is None
-    nulla - account_number is None
     nullfin = full_image_name is None
     if nullr and nulli:
         if nullfin:
