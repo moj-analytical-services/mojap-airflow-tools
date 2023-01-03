@@ -51,6 +51,7 @@ def test_no_errors(repo, tag, full):
         "runAsNonRoot": True,
         "privileged": False,
     }
+    assert k.pod_template_file == "/usr/local/airflow/dags/.kube/default_pod_spec.yaml"
 
     expected_env = [
         V1EnvVar(

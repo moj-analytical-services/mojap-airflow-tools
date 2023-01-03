@@ -154,6 +154,7 @@ def basic_kubernetes_pod_operator(
             task_id=task_id,
             get_logs=True,
             service_account_name=f"{user}-jupyter",
+            pod_template_file="/usr/local/airflow/dags/.kube/default_pod_spec.yaml",
             **kwargs,
         )
     else:
@@ -172,6 +173,7 @@ def basic_kubernetes_pod_operator(
             get_logs=True,
             annotations={"iam.amazonaws.com/role": role},
             security_context=security_context,
+            pod_template_file="/usr/local/airflow/dags/.kube/default_pod_spec.yaml",
             **kwargs,
         )
 
