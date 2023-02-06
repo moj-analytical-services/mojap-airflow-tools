@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "mojap-airflow-tools"
-version = "2.3.0"
+version = "2.3.1"
 description = "A few wrappers and tools to use Airflow on the Analytical Platform"
 authors = ["MoJ Data Engineering"]
 
