@@ -1,13 +1,13 @@
 [tool.poetry]
 name = "mojap-airflow-tools"
-version = "2.2.1"
+version = "2.3.0"
 description = "A few wrappers and tools to use Airflow on the Analytical Platform"
 authors = ["MoJ Data Engineering"]
 
 [tool.poetry.dependencies]
-python = "^3.7"
-apache-airflow = "2.2.2"
-apache-airflow-providers-cncf-kubernetes = "2.1.0"
+python = "^3.10"
+apache-airflow = "2.4.3"
+apache-airflow-providers-cncf-kubernetes = "4.4.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"
