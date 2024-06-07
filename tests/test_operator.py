@@ -222,7 +222,7 @@ def test_irsa():
         role="a_test",
         repo_name="my_repo",
         release="v0.0.0",
-        irsas=True
+        irsa=True
     )
 
     assert k.annotations == {"eks.amazonaws.com/role": "a_test"}
