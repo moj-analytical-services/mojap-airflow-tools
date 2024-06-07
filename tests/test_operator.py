@@ -207,3 +207,22 @@ def test_kwargs():
     )
 
     assert k.service_account_name == "test_service_account"
+
+def test_irsa():
+    test_dag = DAG(
+        "irsa-dag",
+        default_args={},
+        description="testing irsa",
+        start_date=datetime(2020, 1, 1),
+        schedule_interval=None,
+    )
+    k = basic_kubernetes_pod_operator(
+        task_id="task1",
+        dag=test_dag,
+        role="a_test",
+        repo_name="my_repo",
+        release="v0.0.0",
+        irsas=True
+    )
+
+    assert k.annotations == {"eks.amazonaws.com/role": "a_test"}

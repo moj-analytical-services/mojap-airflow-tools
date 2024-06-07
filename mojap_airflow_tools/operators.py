@@ -20,6 +20,7 @@ def basic_kubernetes_pod_operator(
     env_vars: Optional[dict] = None,
     account_number: Optional[str] = None,
     sandboxed: Optional[bool] = False,
+    irsa: Optional[bool] = False,
     **kwargs,
 ) -> KubernetesPodOperator:
     """
@@ -137,6 +138,13 @@ def basic_kubernetes_pod_operator(
         "runAsNonRoot": True,
         "privileged": False,
     }
+
+    # Set default annotation
+    annotations = {"iam.amazonaws.com/role": role}
+
+    if irsa:
+        annotations = {"eks.amazonaws.com/role": role}
+
     if run_as_user is not None:
         security_context["runAsUser"] = run_as_user
 
@@ -170,7 +178,7 @@ def basic_kubernetes_pod_operator(
             config_file="/usr/local/airflow/dags/.kube/config",
             task_id=task_id,
             get_logs=True,
-            annotations={"iam.amazonaws.com/role": role},
+            annotations=annotations,
             security_context=security_context,
             **kwargs,
         )
