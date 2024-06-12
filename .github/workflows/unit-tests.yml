@@ -3,7 +3,7 @@
 name: UnitTests
 
 on:
-  workflow_call:
+  - pull_request
 
 jobs:
   preview:

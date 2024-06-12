@@ -225,4 +225,4 @@ def test_irsa():
         irsa=True
     )
 
-    assert k.annotations == {"eks.amazonaws.com/role": "a_test"}
+    assert k.annotations == {"eks.amazonaws.com/role-arn": "a_test"}

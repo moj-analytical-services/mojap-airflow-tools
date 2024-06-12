@@ -143,7 +143,7 @@ def basic_kubernetes_pod_operator(
     annotations = {"iam.amazonaws.com/role": role}
 
     if irsa:
-        annotations = {"eks.amazonaws.com/role": role}
+        annotations = {"eks.amazonaws.com/role-arn": role}
 
     if run_as_user is not None:
         security_context["runAsUser"] = run_as_user
