@@ -30,4 +30,4 @@ jobs:
           poetry install --no-root
       - name: Run tests with pytest
         run: |
-          if [ -d tests ]; then pytest tests -vv; fi
+          if [ -d tests ]; then python -m pytest tests -vv; fi
