@@ -159,6 +159,7 @@ def basic_kubernetes_pod_operator(
             labels={"app": dag.dag_id},
             name=task_id,
             in_cluster=True,
+            is_delete_operator_pod=False,
             task_id=task_id,
             get_logs=True,
             service_account_name=f"{user}-jupyter",

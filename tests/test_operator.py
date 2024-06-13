@@ -24,7 +24,7 @@ def test_no_errors(repo, tag, full):
         default_args={},
         description="testing",
         start_date=datetime(2020, 1, 1),
-        schedule_interval=None,
+        schedule=None,
     )
     k = basic_kubernetes_pod_operator(
         task_id="task1",
@@ -78,7 +78,7 @@ def test_env_vars():
         default_args={},
         description="testing",
         start_date=datetime(2020, 1, 1),
-        schedule_interval=None,
+        schedule=None,
     )
     k = basic_kubernetes_pod_operator(
         task_id="task1",
@@ -121,7 +121,7 @@ def test_sandboxed():
         default_args={},
         description="testing",
         start_date=datetime(2020, 1, 1),
-        schedule_interval=None,
+        schedule=None,
     )
 
     k = basic_kubernetes_pod_operator(
@@ -147,7 +147,7 @@ def test_error():
         default_args={},
         description="testing",
         start_date=datetime(2020, 1, 1),
-        schedule_interval=None,
+        schedule=None,
     )
 
     with pytest.raises(ValueError):
@@ -195,7 +195,7 @@ def test_kwargs():
         default_args={},
         description="testing",
         start_date=datetime(2020, 1, 1),
-        schedule_interval=None,
+        schedule=None,
     )
     k = basic_kubernetes_pod_operator(
         task_id="task1",
@@ -214,7 +214,7 @@ def test_irsa():
         default_args={},
         description="testing irsa",
         start_date=datetime(2020, 1, 1),
-        schedule_interval=None,
+        schedule=None,
     )
     k = basic_kubernetes_pod_operator(
         task_id="task1",
