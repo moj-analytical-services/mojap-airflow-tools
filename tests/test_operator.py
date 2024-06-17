@@ -24,7 +24,7 @@ def test_no_errors(repo, tag, full):
         default_args={},
         description="testing",
         start_date=datetime(2020, 1, 1),
-        schedule_interval=None,
+        schedule=None,
     )
     k = basic_kubernetes_pod_operator(
         task_id="task1",
@@ -71,14 +71,13 @@ def test_no_errors(repo, tag, full):
     ]
     assert k.env_vars == expected_env
 
-
 def test_env_vars():
     test_dag = DAG(
         "test-dag",
         default_args={},
         description="testing",
         start_date=datetime(2020, 1, 1),
-        schedule_interval=None,
+        schedule=None,
     )
     k = basic_kubernetes_pod_operator(
         task_id="task1",
@@ -121,7 +120,7 @@ def test_sandboxed():
         default_args={},
         description="testing",
         start_date=datetime(2020, 1, 1),
-        schedule_interval=None,
+        schedule=None,
     )
 
     k = basic_kubernetes_pod_operator(
@@ -147,7 +146,7 @@ def test_error():
         default_args={},
         description="testing",
         start_date=datetime(2020, 1, 1),
-        schedule_interval=None,
+        schedule=None,
     )
 
     with pytest.raises(ValueError):
@@ -195,7 +194,7 @@ def test_kwargs():
         default_args={},
         description="testing",
         start_date=datetime(2020, 1, 1),
-        schedule_interval=None,
+        schedule=None,
     )
     k = basic_kubernetes_pod_operator(
         task_id="task1",
@@ -203,7 +202,28 @@ def test_kwargs():
         role="a_test",
         repo_name="my_repo",
         release="v0.0.0",
-        service_account_name="test_service_account",
+        service_account_name="test-service-account",
     )
 
-    assert k.service_account_name == "test_service_account"
+    assert k.service_account_name == "test-service-account"
+
+def test_service_account_name():
+    test_dag = DAG(
+        "sa-dag",
+        default_args={},
+        description="testing irsa",
+        start_date=datetime(2020, 1, 1),
+        schedule=None,
+    )
+    k = basic_kubernetes_pod_operator(
+        task_id="task1",
+        dag=test_dag,
+        role="a_test",
+        repo_name="my_repo",
+        release="v0.0.0",
+        service_account_name="a-cool-service-account-name"
+    )
+
+    assert k.annotations == {}
+    assert k.cluster_context == "analytical-platform-compute-development"
+    assert k.service_account_name == "a-cool-service-account-name"
