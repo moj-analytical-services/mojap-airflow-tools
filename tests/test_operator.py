@@ -71,7 +71,6 @@ def test_no_errors(repo, tag, full):
     ]
     assert k.env_vars == expected_env
 
-
 def test_env_vars():
     test_dag = DAG(
         "test-dag",
@@ -203,14 +202,14 @@ def test_kwargs():
         role="a_test",
         repo_name="my_repo",
         release="v0.0.0",
-        service_account_name="test_service_account",
+        service_account_name="test-service-account",
     )
 
-    assert k.service_account_name == "test_service_account"
+    assert k.service_account_name == "test-service-account"
 
-def test_irsa():
+def test_service_account_name():
     test_dag = DAG(
-        "irsa-dag",
+        "sa-dag",
         default_args={},
         description="testing irsa",
         start_date=datetime(2020, 1, 1),
@@ -222,7 +221,9 @@ def test_irsa():
         role="a_test",
         repo_name="my_repo",
         release="v0.0.0",
-        irsa=True
+        service_account_name="a-cool-service-account-name"
     )
 
-    assert k.annotations == {"eks.amazonaws.com/role-arn": "a_test"}
+    assert k.annotations == {}
+    assert k.cluster_context == "analytical-platform-compute-development"
+    assert k.service_account_name == "a-cool-service-account-name"

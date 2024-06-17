@@ -20,7 +20,7 @@ def basic_kubernetes_pod_operator(
     env_vars: Optional[dict] = None,
     account_number: Optional[str] = None,
     sandboxed: Optional[bool] = False,
-    irsa: Optional[bool] = False,
+    service_account_name: Optional[str] = "default",
     **kwargs,
 ) -> KubernetesPodOperator:
     """
@@ -139,12 +139,6 @@ def basic_kubernetes_pod_operator(
         "privileged": False,
     }
 
-    # Set default annotation
-    annotations = {"iam.amazonaws.com/role": role}
-
-    if irsa:
-        annotations = {"eks.amazonaws.com/role-arn": role}
-
     if run_as_user is not None:
         security_context["runAsUser"] = run_as_user
 
@@ -165,6 +159,25 @@ def basic_kubernetes_pod_operator(
             service_account_name=f"{user}-jupyter",
             **kwargs,
         )
+    elif service_account_name != "default":
+        kube_op = KubernetesPodOperator(
+            dag=dag,
+            namespace="airflow",
+            image=full_image_name,
+            env_vars=env_vars,
+            labels={"app": dag.dag_id},
+            name=task_id,
+            in_cluster=False,
+            is_delete_operator_pod=True,
+            cluster_context="analytical-platform-compute-development",
+            config_file="/usr/local/airflow/dags/.kube/config",
+            task_id=task_id,
+            get_logs=True,
+            security_context=security_context,
+            service_account_name=service_account_name,
+            **kwargs,
+        )
+
     else:
         kube_op = KubernetesPodOperator(
             dag=dag,
@@ -179,7 +192,7 @@ def basic_kubernetes_pod_operator(
             config_file="/usr/local/airflow/dags/.kube/config",
             task_id=task_id,
             get_logs=True,
-            annotations=annotations,
+            annotations={"iam.amazonaws.com/role": role},
             security_context=security_context,
             **kwargs,
         )
