@@ -28,6 +28,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install poetry pytest==6.2.5 apache-airflow==2.4.3 apache-airflow-providers-cncf-kubernetes==4.4.0 pendulum==2.1.2 tenacity==8.3.0
           poetry install --no-root
+
       - name: Run tests with pytest
         run: |
           if [ -d tests ]; then python -m pytest tests -vv; fi
