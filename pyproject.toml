@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "mojap-airflow-tools"
-version = "2.4.3.2"
+version = "2.4.3.3"
 description = "A few wrappers and tools to use Airflow on the Analytical Platform"
 authors = ["MoJ Data Engineering"]
 
@@ -8,7 +8,7 @@ authors = ["MoJ Data Engineering"]
 python = "^3.10"
 apache-airflow = "2.4.3"
 apache-airflow-providers-cncf-kubernetes = "4.4.0"
-tenacity = "8.3.0"
+tenacity = "8.1.0"
 packaging = "21.3"
 pendulum = "2.1.2"
 
