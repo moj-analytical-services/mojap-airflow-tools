@@ -211,7 +211,7 @@ def test_value_error():
 @pytest.mark.parametrize(
     "environment,cluster_context",
     [
-        ("dev", "analytical-platform-compute-development"),
+        ("dev", "analytical-platform-compute-test"),
         ("prod", "analytical-platform-compute-production"),
     ],
 )

@@ -150,10 +150,13 @@ def basic_kubernetes_pod_operator(
         "privileged": False,
     }
 
+    cluster_context = {
+        "dev" : "analytical-platform-compute-test",
+        "prod" : "analytical-platform-compute-production"
+    }
+
     if run_as_user is not None:
         security_context["runAsUser"] = run_as_user
-
-    
 
     if sandboxed:
         user = role.replace("alpha_user_", "", 1).replace("_", "-").lower()
@@ -173,15 +176,11 @@ def basic_kubernetes_pod_operator(
             **kwargs,
         )
     elif service_account_name != "default":
-        if environment == "dev":
-            cluster_context = "analytical-platform-compute-development"
-        elif environment == "prod":
-            cluster_context = "analytical-platform-compute-production"
-        else:
+        if environment not in ["dev", "prod"]:
             raise ValueError(
-                f"environment should be 'dev' or 'prod'. ({environment=})"
-            )
-
+                    "if service_account_name argument is populated," 
+                    f"environment should be 'dev' or 'prod'. ({environment=})"
+                )
         kube_op = KubernetesPodOperator(
             dag=dag,
             namespace="airflow",
@@ -191,7 +190,7 @@ def basic_kubernetes_pod_operator(
             name=task_id,
             in_cluster=False,
             is_delete_operator_pod=True,
-            cluster_context=cluster_context,
+            cluster_context=cluster_context[environment],
             config_file="/usr/local/airflow/dags/.kube/config",
             task_id=task_id,
             get_logs=True,
