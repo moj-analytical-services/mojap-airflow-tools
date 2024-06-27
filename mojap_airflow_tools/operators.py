@@ -84,6 +84,11 @@ def basic_kubernetes_pod_operator(
         to give IAM permissions to containers running on the kubernetes cluster.
         The value should be the same as the ROLE, but using kebab-case.
 
+    environment:
+        If service_account_name is populated, an environment value should also be
+        set as 'dev' or 'prod', depending on the airflow environment the DAG is
+        running on.
+
     Returns
     -------
     KubernetesPodOperator
