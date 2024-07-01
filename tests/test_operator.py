@@ -188,26 +188,34 @@ def test_error():
         )
 
 
-def test_kwargs():
-    test_dag = DAG(
-        "test-dag",
-        default_args={},
-        description="testing",
-        start_date=datetime(2020, 1, 1),
-        schedule=None,
-    )
-    k = basic_kubernetes_pod_operator(
-        task_id="task1",
-        dag=test_dag,
-        role="a_test",
-        repo_name="my_repo",
-        release="v0.0.0",
-        service_account_name="test-service-account",
-    )
+def test_value_error():
+    with pytest.raises(ValueError):
+        test_dag = DAG(
+            "test-dag",
+            default_args={},
+            description="testing",
+            start_date=datetime(2020, 1, 1),
+            schedule=None,
+        )
+        k = basic_kubernetes_pod_operator(
+            task_id="task1",
+            dag=test_dag,
+            role="a_test",
+            repo_name="my_repo",
+            release="v0.0.0",
+            service_account_name="test-service-account",
+        )
 
-    assert k.service_account_name == "test-service-account"
+        assert k.service_account_name == "test-service-account"
 
-def test_service_account_name():
+@pytest.mark.parametrize(
+    "environment,cluster_context",
+    [
+        ("dev", "analytical-platform-compute-test"),
+        ("prod", "analytical-platform-compute-production"),
+    ],
+)
+def test_service_account_name(environment, cluster_context):
     test_dag = DAG(
         "sa-dag",
         default_args={},
@@ -221,9 +229,10 @@ def test_service_account_name():
         role="a_test",
         repo_name="my_repo",
         release="v0.0.0",
-        service_account_name="a-cool-service-account-name"
+        service_account_name="a-cool-service-account-name",
+        environment=environment
     )
 
     assert k.annotations == {}
-    assert k.cluster_context == "analytical-platform-compute-development"
+    assert k.cluster_context == cluster_context
     assert k.service_account_name == "a-cool-service-account-name"

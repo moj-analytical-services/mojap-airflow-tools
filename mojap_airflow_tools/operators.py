@@ -21,6 +21,7 @@ def basic_kubernetes_pod_operator(
     account_number: Optional[str] = None,
     sandboxed: Optional[bool] = False,
     service_account_name: Optional[str] = "default",
+    environment: Optional[str] = None,
     **kwargs,
 ) -> KubernetesPodOperator:
     """
@@ -77,6 +78,16 @@ def basic_kubernetes_pod_operator(
         False (default) if running on deployed. If set to True this Operator
         will assume that you are running the pod in your own namespace
         'user-<github-username>'. Otherwise the namespace is set to airflow.
+
+    service_account_name:
+        This argument can optionally be entered to enable IRSA instead of Kube2IAM
+        to give IAM permissions to containers running on the kubernetes cluster.
+        The value should be the same as the ROLE, but using kebab-case.
+
+    environment:
+        If service_account_name is populated, an environment value should also be
+        set as 'dev' or 'prod', depending on the airflow environment the DAG is
+        running on.
 
     Returns
     -------
@@ -139,6 +150,11 @@ def basic_kubernetes_pod_operator(
         "privileged": False,
     }
 
+    cluster_context = {
+        "dev" : "analytical-platform-compute-test",
+        "prod" : "analytical-platform-compute-production"
+    }
+
     if run_as_user is not None:
         security_context["runAsUser"] = run_as_user
 
@@ -160,6 +176,11 @@ def basic_kubernetes_pod_operator(
             **kwargs,
         )
     elif service_account_name != "default":
+        if environment not in ["dev", "prod"]:
+            raise ValueError(
+                    "if service_account_name argument is populated," 
+                    f"environment should be 'dev' or 'prod'. ({environment=})"
+                )
         kube_op = KubernetesPodOperator(
             dag=dag,
             namespace="airflow",
@@ -169,7 +190,7 @@ def basic_kubernetes_pod_operator(
             name=task_id,
             in_cluster=False,
             is_delete_operator_pod=True,
-            cluster_context="analytical-platform-compute-development",
+            cluster_context=cluster_context[environment],
             config_file="/usr/local/airflow/dags/.kube/config",
             task_id=task_id,
             get_logs=True,
